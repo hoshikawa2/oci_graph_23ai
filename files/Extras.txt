@@ -1,0 +1,7 @@
+
+
+If you are not familiar with the process of connecting to the Autonomous Database, follow these links to understand and properly configure your code.
+
+- [Download Database Connection Information](https://docs.oracle.com/en-us/iaas/autonomous-database-serverless/doc/connect-download-wallet.html)
+- [Connect Database in Python](https://docs.oracle.com/en/cloud/paas/autonomous-database/serverless/adbsb/connecting-python-mtls.html#GUID-8A38B339-72D4-4C9F-915C-0688F0F74EDE)
+

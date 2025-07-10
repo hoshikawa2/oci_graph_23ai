@@ -1,12 +1,12 @@
-## Understanding Graph Theory and Implementing a Knowledge Graph with Oracle Autonomous Database and PGQL
+## Create a Knowledge Graph with Oracle Autonomous Database and PGQL
 
 ### Introduction
 
 This document explores the concepts of graph theory, knowledge graphs, and how they are implemented using the Oracle Autonomous Database with PGQL (Property Graph Query Language). It also explains the Python implementation used to extract relationships from documents using LLMs and store them as graph structures in Oracle.
 
-### What is Graph Theory?
+### What is Graph?
 
-Graph theory is a field of mathematics and computer science focused on modeling relationships between objects. A graph consists of:
+Graph is a field of mathematics and computer science focused on modeling relationships between objects. A graph consists of:
 
 •	**Vertices** (nodes): Represent entities.
 
@@ -42,7 +42,11 @@ Oracle provides a fully managed environment to store and query property graphs:
 
 ![img_1.png](./images/img_1.png)
 
-### Create Knowledge Graph
+### Create a Knowledge Graph
+
+A very common use case for Graph is to use it as one of the components working together with LLMs and a knowledge base, such as PDF files.
+We will use the material Analyze PDF Documents in Natural Language with OCI Generative AI as our foundation, which uses all the mentioned components. However, for the purpose of this document, we will focus on using Oracle Autonomous Database 23ai together with Graph.
+Basically, the Python code from the base material will be modified only in the parts that use the Autonomous 23ai database.
 
 This is the processes executed on this service:
 

@@ -266,6 +266,7 @@ def query_knowledge_graph(query_text):
         FETCH FIRST 20 ROWS ONLY
     """
 
+    # Show the query formulated for Graph
     print(pgql)
 
     try:
@@ -377,11 +378,6 @@ def save_indexed_docs(docs):
 # Main Function
 # =========================
 def chat():
-    # pdf_paths = [
-    #     './Manuals/SOASUITE.pdf',
-    #     './Manuals/using-integrations-oracle-integration-3.pdf'
-    # ]
-
     pdf_paths = ['AAAAAAAAAA.pdf'] # Your PDF Files as a Knowledge Base
 
     already_indexed_docs = load_previously_indexed_docs()
@@ -493,10 +489,6 @@ def chat():
         print("\n📜 RESPONSE:\n")
         print(response)
         print("\n" + "=" * 80 + "\n")
-
-# if __name__ == "__main__":
-#     print("Iniciando")
-#     print(query_knowledge_graph("gateway"))
 
 # 🚀 Run
 if __name__ == "__main__":
