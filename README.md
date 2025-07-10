@@ -1,6 +1,6 @@
-## Create a Knowledge Graph with Oracle Autonomous Database and PGQL
+# Create a Knowledge Graph with Oracle Autonomous Database and PGQL
 
-### Introduction
+## Introduction
 
 This document explores the concepts of graph theory, knowledge graphs, and how they are implemented using the Oracle Autonomous Database with PGQL (Property Graph Query Language). It also explains the Python implementation used to extract relationships from documents using LLMs and store them as graph structures in Oracle.
 
@@ -42,11 +42,48 @@ Oracle provides a fully managed environment to store and query property graphs:
 
 ![img_1.png](./images/img_1.png)
 
-### Create a Knowledge Graph
+## Prerequisites
+
+- Install Python `version 3.10` or higher and Oracle Cloud Infrastructure Command Line Interface (OCI CLI).
+
+## Task 1: Install Python Packages
+
+The Python code requires certain libraries for using OCI Generative AI. Run the following command to install the required Python packages.
+
+```
+pip install -r requirements.txt
+```
+
+## Task 2: Create an Oracle Database 23ai (Always Free)
+
+In this task, we will learn how to provision an Oracle Database 23ai in **Always Free** mode. This version offers a fully managed environment, ideal for development, testing and learning, at no additional cost.
+
+1. Log in to the OCI Console, navigate to **Oracle Database**, **Autonomous Database** and click **Create Autonomous Database Instance**.
+
+2. Enter the following information.
+
+    - **Database Name:** Enter an identifying name for your instance.
+    - **Workload Type:** Select **Data Warehouse** or **Transaction Processing**, according to your needs.
+    - **Compartment:** Select an appropriate compartment to organize your resources.
+
+3. Select **Always Free** to ensure that the instance is provisioned for free.
+
+4. Create a secure password for the `ADMIN` user, which will be used to access the database.
+
+5. Review the settings and click **Create Autonomous Database**. Wait a few minutes for the instance to be provisioned and available for use.
+
+If you are not familiar with the process of connecting to the Autonomous Database, follow these links to understand and properly configure your code.
+
+- [Download Database Connection Information](https://docs.oracle.com/en-us/iaas/autonomous-database-serverless/doc/connect-download-wallet.html)
+- [Connect Database in Python](https://docs.oracle.com/en/cloud/paas/autonomous-database/serverless/adbsb/connecting-python-mtls.html#GUID-8A38B339-72D4-4C9F-915C-0688F0F74EDE)
+
+>**Note:** You will need to connect to the database inside your Python code with the Wallet method.
+
+## Understand the Code
 
 A very common use case for Graph is to use it as one of the components working together with LLMs and a knowledge base, such as PDF files.
-We will use the material Analyze PDF Documents in Natural Language with OCI Generative AI as our foundation, which uses all the mentioned components. However, for the purpose of this document, we will focus on using Oracle Autonomous Database 23ai together with Graph.
-Basically, the Python code from the base material will be modified only in the parts that use the Autonomous 23ai database.
+We will use the material [Analyze PDF Documents in Natural Language with OCI Generative AI](https://docs.oracle.com/en/learn/oci-genai-pdf/) as our foundation, which uses all the mentioned components. However, for the purpose of this document, we will focus on using Oracle Autonomous Database 23ai together with Graph.
+Basically, the [Python code](./files/main.py) from the base material will be modified only in the parts that use the Autonomous 23ai database.
 
 This is the processes executed on this service:
 
@@ -58,7 +95,9 @@ This is the processes executed on this service:
 
 •	Building the property graph
 
+>**Note:** Download the Graph Python code modified to use **Oracle Autonomous Database 23ai** here: [main.py](./files/main.py)
 
+### create_knowledge_graph
 
 ```python
 def create_knowledge_graph(chunks):
@@ -170,7 +209,7 @@ def create_knowledge_graph(chunks):
 
 •	All interactions with Oracle are done via oracledb and PL/SQL anonymous blocks.
 
-#### Next Steps
+### Next Steps
 
 
 •	Use PGQL to explore and query graph relationships.
@@ -179,7 +218,7 @@ def create_knowledge_graph(chunks):
 
 •	Expose the graph through an API REST or LangChain Agent.
 
-### 📌 Graph Query Support Functions
+### Graph Query Support Functions
 
 There are two essential functions that enable semantic search and reasoning over the knowledge graph: **extract_graph_keywords** and **query_knowledge_graph**. These components allow questions to be interpreted into meaningful graph queries using PGQL on Oracle Autonomous Database.
 
@@ -213,19 +252,19 @@ def extract_graph_keywords(question: str) -> str:
         return ""
 ```
 
-✅ What it does:
+### What it does:
 
 •	Uses an LLM (llm_for_rag) to transform natural language questions into a list of graph-friendly keywords.
 
 •	The prompt is designed to cleanly extract entities and terms that are relevant for searching the graph.
 
-💡 Why it’s important:
+### Why it’s important:
 
 •	It bridges the gap between unstructured questions and structured queries.
 
 •	Ensures that only specific, domain-relevant terms are used for matching in the PGQL query.
 
-🧠 LLM-enhanced behavior:
+### LLM-enhanced behavior:
 
 •	Breaks compound technical terms.
 
@@ -233,7 +272,7 @@ def extract_graph_keywords(question: str) -> str:
 
 •	Normalizes text by lowercasing and deduplicating terms.
 
-📌 Example:
+### Example:
 
     Input:
 
@@ -289,11 +328,11 @@ def query_knowledge_graph(query_text):
 ```
 
 
-✅ What it does:
+### What it does:
 
 •	Accepts a keyword-based string (often produced by extract_graph_keywords) and constructs a PGQL query to retrieve relationships from the knowledge graph.
 
-⚙️ Key mechanics:
+### Key mechanics:
 
 •	The GRAPH_TABLE clause uses MATCH to traverse the graph from source to target node.
 
@@ -301,7 +340,7 @@ def query_knowledge_graph(query_text):
 
 •	Limits results to 20 to avoid flooding the output.
 
-🆚 Why use Oracle PGQL:
+### Why use Oracle PGQL:
 
 •	PGQL (Property Graph Query Language) is SQL-like but designed for graph traversal.
 
@@ -309,11 +348,21 @@ def query_knowledge_graph(query_text):
 
 •	Offers indexing, optimization, and native graph search capabilities that are enterprise-ready.
 
-🧠 Oracle-Specific Notes:
+### Oracle-Specific Notes:
 
 •	The GRAPH_TABLE() is unique to Oracle PGQL and allows queries over logical views of graphs defined via relational tables.
 
 •	Unlike Cypher (Neo4j), PGQL runs over structured data using SQL extensions, making it friendlier in RDBMS-heavy environments.
+
+## Task 3: Run the Chatbot
+
+Run the following command.
+
+```
+python main.py 
+```
+
+See the foundation material to understand more about the test case.
 
 ## Reference
 
@@ -321,6 +370,9 @@ def query_knowledge_graph(query_text):
 - [Oracle Graph Learning Path](https://blogs.oracle.com/database/post/oracle-graph-learning-path)
 - [Graph Developer's Guide for Property Graph](https://docs.oracle.com/en/database/oracle/property-graph/25.2/spgdg/oracle-graph-python-client.html#GUID-9800E556-0B6C-4EAF-A4FC-9AE9AB46023C)
 - [Getting Started with Property Graphs in Oracle Database 23ai](https://blogs.oracle.com/ace/post/getting-started-with-property-graphs-in-oracle-database-23ai)
+- [Download Database Connection Information](https://docs.oracle.com/en-us/iaas/autonomous-database-serverless/doc/connect-download-wallet.html)
+- [Connect Database in Python](https://docs.oracle.com/en/cloud/paas/autonomous-database/serverless/adbsb/connecting-python-mtls.html#GUID-8A38B339-72D4-4C9F-915C-0688F0F74EDE)
+
 
 ## Acknowledgments
 

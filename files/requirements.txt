@@ -1,0 +1,18 @@
+langchain==0.3.21
+langchain-community==0.3.14
+langchain-core==0.3.47
+tqdm
+faiss-cpu
+unstructured[pdf,ppt]==0.13.2
+PyMuPDF==1.24.1
+PyPDF2==3.0.1
+ocrmypdf==14.1.0  # opcional, se quiser OCR fallback
+pypandoc  # necessário para alguns loaders .pptx
+pillow
+python-docx
+chardet
+lxml
+oci
+oci-cli
+oracle-graph-client
+
